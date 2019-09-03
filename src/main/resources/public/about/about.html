@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>精康科技</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../layer-v3.1.1/layer/layer.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/commons.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/common.js"></script>
+
+    <link rel="stylesheet" href="../page/lib/bootstrap/css/bootstrap2.css">
+    <link rel="stylesheet" href="../page/stylesheets/theme.css">
+    <link rel="stylesheet" href="../page/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../Bootstrap4.3.1/css/about.css">
+</head>
+<!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body class="">
+<!--<![endif]-->
+<div class="navbar" id="p_title">
+    <div class="navbar-inner">
+        <ul class="nav pull-right">
+            <li><a href="javascript:void(0);" onclick="clang(1)" class="hidden-phone visible-tablet visible-desktop">English</a></li>
+            <li><a href="javascript:void(0);" onclick="clang(2)" class="hidden-phone visible-tablet visible-desktop">中文</a></li>
+            <li><a href="#" class="hidden-phone visible-tablet visible-desktop">|</a></li>
+            <li><a href="javascript:void (0)" onclick="Logout()" class="hidden-phone visible-tablet visible-desktop">注销</a></li>
+            <li>
+                <a href="javascript:void (0)" onclick="updatePwd()" class="dropdown-toggle">
+                    <i class="icon-user"></i><span id="yh"></span>
+                </a>
+            </li>
+        </ul>
+        <a class="brand"><img src="../page/images/logo2.png" style="height: 30px;"> <span class="second">精康科技</span></a>
+    </div>
+</div>
+
+<div class="sidebar-nav">
+    <!--a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>功能列表</a-->
+    <ul id="dashboard-menu" class="nav nav-list collapse in pagination-centered">
+        <li><a href="../home/home.html" style="line-height: 20px;height: 53px;padding-top: 22px;"><i class="icon-home" style="font-size: 2em;"></i><br>首页</a></li>
+        <li><a href="../uploadFile/uploadFile.html" style="line-height: 20px;height: 53px;padding-top: 22px;"><i class="icon-upload" style="font-size: 2em;"></i><br>上传</a></li>
+        <li>
+            <a href="#" onclick="alert('请选择影像图片上传或查看历史记录');return false;" style="line-height: 20px;height: 53px;padding-top: 22px;"><i class="icon-dashboard" style="font-size: 2em;"></i><br>分析结果</a>
+        </li>
+        <li><a href="/list" style="line-height: 20px;height: 53px;padding-top: 22px;"><i class="icon-list-alt" style="font-size: 2em;"></i><br>历史记录</a></li>
+        <li class="active"><a href="about.html" style="line-height: 20px;height: 53px;padding-top: 22px;"><i class="icon-info-sign" style="font-size: 2em;"></i><br>关于</a></li>
+    </ul>
+</div>
+<div class="content" style="height: 881px;">
+    <div class="container-fluid">
+        <div class="row-fluid" style="max-width:  600px;">
+            <h2>公司简介</h2>
+            <p style="font-size: 20px;line-height:28px;">　　精康科技于2017年在美国亚特兰大成立，是一家专注于人工智能肝脏疾病检验的科技公司。利用其独创的无创肝纤维化检测方法，精康科技为医院及体检机构提供新的解决方案。精康科技的团队位于北京和美国亚特兰大，相关科研项目获得乔治亚州Georgia Research Alliance （GRA）项目基金支持，并已申请国际专利。精康科技在上海，武汉和石家庄已经与多家三甲医院签订了合作协议，在数据、科研等方向上开展全面合作。</p>
+            <h2>系统LOGO:</h2>
+            <img src="../page/images/logo22.jpg">
+            <footer>
+            </footer>
+        </div>
+    </div>
+</div>
+<div class="navbar" style="border-bottom-width: 0px;border-top-width: 2px;" id="footer">
+    <div class="navbar-inner" style="color: #FFF; text-align: center;border-bottom-width: 0px;">
+        <p>Copyright©精康科技</p>
+    </div>
+</div>
+<script type="application/javascript">
+    let username;
+    getUsername().then((data) => {
+        username = data.content;
+        $("#yh").html(data.content);
+    });
+</script>
+
+</body>
+</html>

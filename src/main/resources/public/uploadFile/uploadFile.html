@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>精康科技</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../layer-v3.1.1/layer/layer.js"></script>
+    <script type="text/javascript" src="../easyUpload/easyUpload.js"></script>
+    <script type="text/javascript" src="../ssiUploader/js/ssi-uploader.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/commons.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/common.js"></script>
+<!--    <script type="text/javascript" src="../page/lib/showLoading/js/jquery.showLoading.js"></script>-->
+
+<!--    <link rel="stylesheet" th:href="@{/static/page/lib/showLoading/images/loading.gif}">-->
+    <link rel="stylesheet" href="../page/lib/bootstrap/css/bootstrap2.css">
+    <link rel="stylesheet" href="../page/stylesheets/theme.css">
+    <link rel="stylesheet" href="../page/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../easyUpload/easy-upload.css">
+    <link rel="stylesheet" href="../Bootstrap4.3.1/css/showLoading.css">
+    <link rel="stylesheet" href="../ssiUploader/css/ssi-uploader.css">
+    <link rel="stylesheet" href="../Bootstrap4.3.1/css/uploadFile.css">
+</head>
+<!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body class="">
+<!--<![endif]-->
+<div class="navbar" id="p_title">
+    <div class="navbar-inner">
+        <ul class="nav pull-right">
+            <li><a href="javascript:void(0);" onclick="clang(1)" class="hidden-phone visible-tablet visible-desktop">English</a>
+            </li>
+            <li><a href="javascript:void(0);" onclick="clang(2)"
+                   class="hidden-phone visible-tablet visible-desktop">中文</a></li>
+            <li><a href="#" class="hidden-phone visible-tablet visible-desktop">|</a></li>
+            <li><a href="javascript:void (0)" onclick="Logout()"
+                   class="hidden-phone visible-tablet visible-desktop">注销</a></li>
+            <li>
+                <a href="javascript:void (0)" onclick="updatePwd()" class="dropdown-toggle">
+                    <i class="icon-user"></i><span id="yh"></span>
+                </a>
+            </li>
+        </ul>
+        <a class="brand"><img src="../page/images/logo2.png" style="height: 30px;"> <span class="second">精康科技</span></a>
+    </div>
+</div>
+<div class="sidebar-nav">
+    <!--a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>功能列表</a-->
+    <ul id="dashboard-menu" class="nav nav-list collapse in pagination-centered">
+        <li ><a href="../home/home.html" style="line-height: 20px;height: 53px;padding-top: 22px;" ><i class="icon-home" style="font-size: 2em;" ></i><br>首页</a></li>
+        <li class="active"><a href="../uploadFile/uploadFile.html" style="line-height: 20px;height: 53px;padding-top: 22px;" ><i class="icon-upload" style="font-size: 2em;" ></i><br>上传</a></li>
+        <li >
+            <a href="#" onclick="alert('请选择影像图片上传或查看历史记录');return false;" style="line-height: 20px;height: 53px;padding-top: 22px;" ><i class="icon-dashboard" style="font-size: 2em;" ></i><br>分析结果</a>
+        </li>
+        <li ><a href="/list" style="line-height: 20px;height: 53px;padding-top: 22px;" ><i class="icon-list-alt" style="font-size: 2em;" ></i><br>历史记录</a></li>
+        <li ><a href="../about/about.html" style="line-height: 20px;height: 53px;padding-top: 22px;" ><i class="icon-info-sign" style="font-size: 2em;" ></i><br>关于</a></li>
+    </ul>
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="well" style="text-align: left;">
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane active in" id="home">
+                        <input type="file" multiple id="ssi-upload"/>
+                        <form id="tab" action="/uploadsave" method="post">
+                            <p id="picId" class="pic">
+                            </p>
+                            <!--div id="easyContainer" style="text-align: left;display: inline-block;"></div-->
+                            <div class="btn-toolbar" style="text-align: left;display: inline-block;">
+                                <div class="tab-pane active in" id="home">
+                                    <label>参数</label>
+                                    <input type="text" id="heart_beat" name="heart_beat" value="" class="input-xlarge" autocomplete="off">
+                                    <label>病人编号：</label>
+                                    <input type="text" id="patient_id" name="patient_id" value="" class="input-xlarge" autocomplete="off">
+                                    <label>检测编号：</label>
+                                    <input type="text" id="detection_id" name="detection_id" value="" class="input-xlarge" autocomplete="off">
+                                    <hr>
+                                    <a class="btn btn-large btn-block"  id="startJS" href="#">开始计算</a>
+                                </div>
+                                <div class="btn-group">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar" style="border-bottom-width: 0px;border-top-width: 2px;" id="footer">
+    <div class="navbar-inner" style="color: #FFF; text-align: center;border-bottom-width: 0px;">
+        <p>Copyright&copy;精康科技</p>
+    </div>
+</div>
+<script language="JavaScript">
+    function clang(_sing){
+        var langStr = "zh-CN";
+        if(_sing == 1){
+            langStr = "en";
+        }
+        $.ajax({url:"/ajax/clang?lang="+langStr,success: function(){
+                window.location.reload();
+            }});
+    }
+</script>
+<script type="text/javascript">
+    let username;
+    getUsername().then((data) => {
+        username = data.content;
+        $("#yh").html(data.content);
+    });
+    var tempheith=0;
+    $(function() {
+        var footerHeight = 0,
+            footerTop = 0,
+            $footer = $("#footer");
+        $content = $('.content');
+        $title = $('#p_title');
+        function positionFooter() {
+            //取到div#footer高度
+            footerHeight = $footer.height();
+            //div#footer离屏幕顶部的距离
+            footerTop = ($(window).scrollTop()+$(window).height()-footerHeight)+"px";
+            //alert($(window).height());
+            //alert("offh:"+document.getElementsByClassName("content")[0].offsetHeight);
+            if(tempheith != $(window).height()) {
+                //alert($(window).height() +" "+tempheith);
+                tempheith = $(window).height();
+                $content.css({height:'auto'});
+            }else{
+
+                return;
+            }
+            if ( ($(document.body).height()+footerHeight) < $(window).height()) {
+                // alert($(window).height() +" "+footerHeight+" "+$title.height());
+                var tempheith2 = $(window).height()-footerHeight-$title.height()-4;
+                $content.css({height:tempheith2});
+
+            }
+            //如果页面内容高度小于屏幕高度，div#footer将绝对定位到屏幕底部，否则div#footer保留它的正常静态定位
+
+
+        }
+        positionFooter();
+        $(window).scroll(positionFooter).resize(positionFooter);
+    });
+</script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function() {
+        $('.demo-cancel-click').click(function(){return false;});
+    });
+</script>
+<script>
+    const api = {
+        insertResultGroup: (username, patientID, detectionID, city,fileList) => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url:"../upload/insertResultGroup",
+                    type:"POST",
+                    data:JSON.stringify({
+                        username: username,
+                        patientID: patientID,
+                        detectionID: detectionID,
+                        city: city,
+                        imageList: fileList
+                    }),
+                    contentType:'application/json',//发送信息至服务器时内容编码类型。
+                    dataType:'json', // 预期服务器返回的数据类型。如果不指定，jQuery 将自动根据 HTTP 包 MIME 信息来智能判断，比如XML MIME类型就被识别为XML。
+                    cache:false,
+                    success: (data) => {
+                        resolve(data);
+                    },
+                    error:(XMLHttpRequest, textStatus, errorThrown)=>{
+                        try {
+                            let response = JSON.parse(XMLHttpRequest.responseText);
+                            layer.alert(response.msg + "," + response.data,{icon: 2});
+                        } catch (e) {
+                            layer.alert('服务器异常',{icon: 2});
+                        }
+                    }
+                });
+            });
+        }
+    };
+    var is_con = 1;
+    function cancelUpLoad() {
+        $("body").hideLoading();
+        clearInterval(intervalVal);
+        is_con = 0;
+    }
+    var fileArr  =[];
+    $('#ssi-upload').ssi_uploader(
+        {
+            url: '../upload/image',
+            maxFileSize: 10,
+            allowed: ['jpg', 'gif', 'png', 'xlsx', 'bmp', 'jpeg', 'Jpeg'],
+            locale: "cn"
+            ,
+            beforeUpload: function () {
+            },
+            onClear: function () {
+                $("#tab input[name='fileList']").remove();
+                fileArr = [];
+            },
+            onEachUpload: function (fileInfo, res) {
+                if (res) {
+                    fileArr.push(res.content);
+                    $("#tab").append("<input type='hidden' id='f" + res.content + "' name='fileList' value='" + res.content + "'>");
+                }
+                console.log(fileInfo);
+            },
+            onDeleteOne: function (index_form) {
+            }
+        });
+    $("#startJS").click(() => {
+        if($("#patient_id").val().trim()==""){
+            layer.msg("请输入病人ID", () => {
+            });
+            return false;
+        }
+        if($("#detection_id").val().trim()==""){
+            layer.msg("请输入检测ID", () => {
+            });
+            return false;
+        }
+        if($('#tab input[name=\'fileList\']').length < 1){
+            layer.msg("请上传图片", () => {
+            });
+            return false;
+        }
+        const patientID = $("#patient_id").val();
+        const detectionID = $("#detection_id").val();
+        const heart_beat = $("#heart_beat").val();
+        const ip_city = {'test':'北京市', 'sjzwy':'石家庄市', 'zsyy':'上海市', 'haochen':'佐治亚', 'Jiangyi':'佐治亚', 'Mingtao':'佐治亚', 'mingtao':'佐治亚','qlhqlh':'杭州市','qqq':'亚特兰大'};
+        const fileList = fileArr;
+        const city = ip_city[username];
+        api.insertResultGroup(username, patientID, detectionID, city,fileList).then((data) => {
+            console.log(data);
+            // window.location.href = "../upload/image/qqq/" + fileList[0];
+        }).catch((err) => {
+            layer.alert(err, {icon: 2});
+        });
+    });
+
+
+</script>
+</body>
+</html>

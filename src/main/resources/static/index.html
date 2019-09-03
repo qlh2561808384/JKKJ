@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>精康科技</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+
+    <script type="text/javascript" src="Bootstrap4.3.1/js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/md5.js"></script>
+    <script type="text/javascript" src="page/lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/common.js"></script>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/date.js"></script>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/date.format.js"></script>
+    <script type="text/javascript" src="layer-v3.1.1/layer/layer.js"></script>
+
+    <link rel="stylesheet" href="page/lib/bootstrap/css/bootstrap2.css">
+    <link rel="stylesheet" href="page/stylesheets/theme.css">
+    <link rel="stylesheet" href="page/lib/font-awesome/css/font-awesome.css">
+    <style type="text/css">
+        #line-chart {
+            height: 300px;
+            width: 800px;
+            margin: 0px auto;
+            margin-top: 1em;
+        }
+
+        .brand {
+            font-family: georgia, serif;
+        }
+
+        .brand .first {
+            color: #ccc;
+            font-style: italic;
+        }
+
+        .brand .second {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        body {
+            color: #2d2d2d;
+        }
+
+        #reme {
+            vertical-align: middle;
+        }
+
+        #Remember {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<!--[if lt IE 7 ]>
+<body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>
+<body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]>
+<body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]>
+<body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body class="">
+<!--<![endif]-->
+<div class="navbar" id="p_title">
+    <div class="navbar-inner">
+        <ul class="nav pull-right" style="text-align: right;">
+            <li><a href="javascript:void(0);" onclick="clang(1)" class="hidden-phone visible-tablet visible-desktop">English</a></li>
+            <li><a href="javascript:void(0);" onclick="clang(2)" class="hidden-phone visible-tablet visible-desktop">中文</a></li>
+        </ul>
+        <a class="brand"><img src="page/images/logo2.png" style="height: 30px;"/> <span class="second" id="jkkj">精康科技</span></a>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="dialog">
+        <div class="block">
+            <p class="block-heading" id="yhdl">用户登录</p>
+            <div class="block-body">
+                <form id="form">
+                    <label id="yh">登录名：</label>
+                    <input type="text" class="span12" name="username" id="username" autocomplete="off">
+                    <label id="mm">密码：</label>
+                    <input type="password" class="span12" name="pwd" id="pwd">
+                    <a href="#" name="submit" id="subBtn" class="btn btn-primary pull-right">登录</a>
+                    <a href="#" name="submit" id="regBtn" class="btn btn-primary pull-right">注册</a>
+                    <input type="checkbox" id="Remember">
+                    <label class="remember-me" id="reme"> 记住账户名</label>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="application/javascript">
+    const api = $.extend({}, API, {
+        getLoginUserData: function (user, pwd, callback) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url:"login/getLoginUserData",
+                    type:"POST",
+                    data:{
+                        username: user,
+                        password: pwd
+                    },
+                    dataType:'json',
+                    cache:false,
+                    success: (data) => {
+                        resolve(data);
+                    },
+                    error:(XMLHttpRequest, textStatus, errorThrown)=>{
+                        try {
+                            let response = JSON.parse(XMLHttpRequest.responseText);
+                            layer.alert(response.msg + "," + response.data,{icon: 2});
+                        } catch (e) {
+                            layer.alert('服务器异常',{icon: 2});
+                        }
+                    }
+                });
+            });
+        },
+        insertLoginLog:function (user,loginType,userid) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url:"login/insertLoginLog",
+                    type:"POST",
+                    data:{
+                        username: user,
+                        loginType: loginType,
+                        userid: userid
+                    },
+                    dataType:'json',
+                    cache:false,
+                    success: (data) => {
+                        resolve(data);
+                    },
+                    error:(XMLHttpRequest, textStatus, errorThrown)=>{
+                        try {
+                            let response = JSON.parse(XMLHttpRequest.responseText);
+                            layer.alert(response.msg + "," + response.data,{icon: 2});
+                        } catch (e) {
+                            layer.alert('服务器异常',{icon: 2});
+                        }
+                    }
+                });
+            });
+        },
+        rememberUserAndPassword: (username, password) => {
+            if ($("#Remember").is(':checked')) {
+                $.cookie("username", username, {expires: 20}); // 存储一个带20天期限的 cookie
+                $.cookie("password", password, {expires: 20});
+            }
+        },
+        keyDowm: () => {
+            $("body").keydown(function () {
+                if (event.keyCode == "13") {
+                    $("#subBtn").click();
+                }
+            });
+        },
+        showUserAndPwd: () => {
+            if ($.cookie("username") != null) {
+                $("#username").val($.cookie("username"));
+                $("#pwd").val($.cookie("password"));
+                $('#Remember').attr('checked', 'checked');
+            }
+        },
+        getCode: () => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url:"login/insertLoginCode",
+                    type:"POST",
+                    data:{},
+                    dataType:'json',
+                    cache:false,
+                    success: (data) => {
+                        resolve(data);
+                    },
+                    error:(XMLHttpRequest, textStatus, errorThrown)=>{
+                        try {
+                            let response = JSON.parse(XMLHttpRequest.responseText);
+                            layer.alert(response.msg + "," + response.data,{icon: 2});
+                        } catch (e) {
+                            layer.alert('服务器异常',{icon: 2});
+                        }
+                    }
+                });
+            });
+        },
+        updateActiveCode: (username,code) => {
+            return new Promise((resolve, reject) => {
+                $.post("login/updateActiveCode", {name: username, newcode: code}, (data) => {
+                    resolve(data);
+                }, "json");
+            });
+        },
+        checkNewCode: (newCode) => {
+            return new Promise((resolve, reject) => {
+                $.post("login/checkNewCode", {newCode: newCode}, (data) => {
+                    resolve(data);
+                }, "json");
+            });
+        }
+    });
+    $(function () {
+      /*  api.getCode().then((data) => {
+            if(data.success){
+                alert(0);
+            }
+        });*/
+        api.keyDowm();
+        $("#username").focus();
+        api.showUserAndPwd();
+    });
+
+    $("#subBtn").click(function () {
+        const password = $("#pwd").val();
+        const username = $("#username").val();
+        const pwd = $.md5(password);
+        api.getLoginUserData(username, pwd).then((data) => {
+            if (data.length > 0) {
+                if (Time.compareTimeYMR(data[0].activecode.substr(0, 8))) {
+                    layer.msg('注册码失效，请重新激活账号', {
+                        time: 0 //不自动关闭
+                        ,btn: ['跳转激活界面', '取消']
+                        ,yes: function(index){
+                            layer.close(index);
+                            //prompt层
+                            layer.prompt({title: '新的注册码', formType: 1}, function(pass, index){
+                                layer.close(index);
+                                api.checkNewCode(pass).then((res) => {
+                                    if (res.length > 0) {
+                                        if (Time.compareTimeYMR(pass.substr(0, 8))) {
+                                            layer.msg("失效的注册码，请修改注册码");
+                                        }else {
+                                            api.updateActiveCode(username, pass).then((result) => {
+                                                console.log(result);
+                                                if (result.success) {
+                                                    layer.msg("用户成功激活，请重新登录");
+                                                }else {
+                                                    layer.msg("用户激活失败，激活码不存在。");
+                                                }
+                                            }).catch((err) => {
+                                                layer.alert(err,{icon: 2});
+                                            });
+                                        }
+                                    }else {
+                                        layer.msg("无效的注册码");
+                                    }
+                                });
+                            });
+                        }
+                    });
+                } else {
+                    api.insertLoginLog(username, data[0].type, data[0].ID).then((list) => {
+                        if (list.success) {
+                            api.rememberUserAndPassword(username, password);
+                            window.location.href = "home/home.html";
+                        }
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                }
+            }else {
+                if (username == "") {
+                    layer.msg('请输入登录名',{icon: 6});
+                }else if(password == ""){
+                    layer.msg('请输入密码',{icon: 6});
+                }else {
+                    layer.msg('账号密码错误', {icon: 2});
+                }
+            }
+        }).catch((err) => {
+            layer.alert(err,{icon: 2});
+            console.error(err);
+        });
+    });
+
+    function clang(_sing) {
+        if (_sing == 1) {
+            $.getJSON("locales/en/translation.json", (ENjson) => {
+                $("#jkkj").text(ENjson.title.PrecisionMedCare);
+                $("#yhdl").text(ENjson['sign-in'].Login);
+                $("#yh").text(ENjson['sign-in'].account + "：");
+                $("#mm").text(ENjson['sign-in'].password + "：");
+                $("#subBtn").text(ENjson['sign-in'].enter);
+                $("#reme").text(ENjson['sign-in']['remember_account']);
+            });
+        } else {
+            $.getJSON("locales/zh-CN/translation.json", (ENjson) => {
+                $("#jkkj").text(ENjson.title.PrecisionMedCare);
+                $("#yhdl").text(ENjson['sign-in'].Login);
+                $("#yh").text(ENjson['sign-in'].account + "：");
+                $("#mm").text(ENjson['sign-in'].password + "：");
+                $("#subBtn").text(ENjson['sign-in'].enter);
+                $("#reme").text(ENjson['sign-in']['remember_account']);
+            });
+        }
+    }
+
+    $("#regBtn").click(() => {
+        layer.open({
+            type: 2,
+            title: '用户注册',
+            maxmin: true,
+            area: ['600px', '600px'],
+            content: 'regist/regist.html',
+            end: function(){
+                layer.tips('Hi', '#about', {tips: 1})
+            },
+        });
+    });
+</script>
+</body>
+</html>

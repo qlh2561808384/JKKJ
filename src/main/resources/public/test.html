@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="../Bootstrap4.3.1/js/ajax.js"></script>
+</head>
+<body>
+<script type="application/javascript">
+    const api = $.extend({}, BaseApi, {
+        getUsername: () => {
+            return new Promise((resolve, reject) => {
+                /* $.get("../login/getUsername", {}, (data) => {
+                     resolve(data);
+                 });*/
+                BaseApi.doPost("../login/getUsername", {}, function (data) {
+                    resolve(data);
+                }, {});
+            })
+        }
+    });
+    const time = "201807201111111111111111";
+    let date = time.substr(0, 8);
+
+    $(function () {
+        api.getUsername().then((data)=>{
+            console.log(data);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<!--
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.precisionmedcare.jkkj.mapper.LoginMapper">
+    <select id="login" resultType="com.precisionmedcare.jkkj.domain.Loginuser">
+        SELECT *,DATE_FORMAT(endTime,'%Y-%m-%d') as endTime2 FROM loginuser WHERE username=#{username} AND pwd=#{password} AND type=1 AND isDel != 1
+    </select>
+</mapper>-->

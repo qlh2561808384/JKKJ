@@ -1,0 +1,53 @@
+#line-chart {
+    height:300px;
+    width:800px;
+    margin: 0px auto;
+    margin-top: 1em;
+}
+.brand { font-family: georgia, serif; }
+.brand .first {
+    color: #ccc;
+    font-style: italic;
+}
+.brand .second {
+    color: #fff;
+    font-weight: bold;
+}
+.easy_upload_select,.easy_upload_head_btn2,.easy_upload_head_btn1{
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    color: #333333;
+
+}
+#ssi-uploadBtn{
+    margin-left:100px;
+}
+.btn-large {
+    padding: 4px 14px;
+    font-size: 16px;
+    line-height: normal;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 1px;
+    width:283px;
+}
+.ssi-buttonWrapper{
+    width: 90%;
+    text-align: left;
+}
+.ssi-uploadBox{
+    width: 92%;
+    text-align: left;
+}
+.ssi-dropZonePreview {
+    min-height: 230px;
+}
+.loading-indicator{
+    text-align: center;
+    color: #000;
+    font-size: 16px;
+}
+.cancel-v {
+    padding: 1px 6px;
+    margin-top: 40px;
+}

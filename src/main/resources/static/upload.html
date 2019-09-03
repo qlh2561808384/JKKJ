@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传照片案例</title>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="Bootstrap4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="ssiUploader/js/ssi-uploader.js"></script>
+<!--    <script type="text/javascript" src="layer-v3.1.1/layer/layer.js"></script>
+    <script type="text/javascript" src="easyUpload/easyUpload.js"></script>-->
+
+    <link rel="stylesheet" href="page/lib/bootstrap/css/bootstrap2.css">
+    <link rel="stylesheet" href="ssiUploader/css/ssi-uploader.css"/>
+<!--    <link rel="stylesheet" href="page/stylesheets/theme.css">
+    <link rel="stylesheet" href="page/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="Bootstrap4.3.1/css/uploadFile.css">
+    <link rel="stylesheet" href="Bootstrap4.3.1/css/showLoading.css">
+    <link rel="stylesheet" href="easyUpload/easy-upload.css">-->
+
+</head>
+<body>
+<input type="file" multiple id="ssi-upload5"/>
+<script type="application/javascript">
+    let fileArr  =[];
+    $('#ssi-upload5').ssi_uploader(
+        {
+            url: 'upload/image',
+            maxFileSize: 10, ////允许上传的最大文件尺寸
+            allowed: ['jpg', 'gif', 'png', 'xlsx', 'bmp', 'jpeg', 'Jpeg'],
+            locale: "cn",
+            beforeUpload: function () {
+            },
+            onClear: function () {
+                $("#tab input[name='fileList']").remove();
+                fileArr = [];
+            },
+            onEachUpload: function (fileInfo, res) {
+                console.log(res);
+                if (res) {
+                    for (var i = 0; i < res.length; i++) {
+                        fileArr.push(res.content);
+                        $("#tab").append("<input type='hidden' id='f" + res.content + "' name='fileList' value='" + res.content + "'>");
+                    }
+                }
+                console.log(fileInfo);
+                console.log(fileArr);
+                alert($('#tab input[name=\'fileList\']').length);
+            },
+            onDeleteOne: function (index_form) {
+                alert(index_form);
+            }
+        });
+</script>
+
+</body>
+</html>
