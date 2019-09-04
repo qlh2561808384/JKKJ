@@ -161,7 +161,7 @@
 </script>
 <script>
     const api = {
-        insertResultGroup: (username, patientID, detectionID, city,fileList) => {
+        insertResultGroup: (username, patientID, detectionID, city,fileList,heartbeat) => {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url:"../upload/insertResultGroup",
@@ -171,7 +171,8 @@
                         patientID: patientID,
                         detectionID: detectionID,
                         city: city,
-                        imageList: fileList
+                        imageList: fileList,
+                        heartbeat: heartbeat
                     }),
                     contentType:'application/json',//发送信息至服务器时内容编码类型。
                     dataType:'json', // 预期服务器返回的数据类型。如果不指定，jQuery 将自动根据 HTTP 包 MIME 信息来智能判断，比如XML MIME类型就被识别为XML。
@@ -203,8 +204,7 @@
             url: '../upload/image',
             maxFileSize: 10,
             allowed: ['jpg', 'gif', 'png', 'xlsx', 'bmp', 'jpeg', 'Jpeg'],
-            locale: "cn"
-            ,
+            locale: "cn",
             beforeUpload: function () {
             },
             onClear: function () {
@@ -243,7 +243,7 @@
         const ip_city = {'test':'北京市', 'sjzwy':'石家庄市', 'zsyy':'上海市', 'haochen':'佐治亚', 'Jiangyi':'佐治亚', 'Mingtao':'佐治亚', 'mingtao':'佐治亚','qlhqlh':'杭州市','qqq':'亚特兰大'};
         const fileList = fileArr;
         const city = ip_city[username];
-        api.insertResultGroup(username, patientID, detectionID, city,fileList).then((data) => {
+        api.insertResultGroup(username, patientID, detectionID, city,fileList,heart_beat).then((data) => {
             console.log(data);
             // window.location.href = "../upload/image/qqq/" + fileList[0];
         }).catch((err) => {
