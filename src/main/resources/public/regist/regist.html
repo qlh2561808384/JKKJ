@@ -20,30 +20,35 @@
             <div class="modal-header">
                 <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
                 <h4 class="modal-title" id="myModalLabel">用户注册</h4>
+<!--                <p style="color: red;text-align: right">*表示必填</p>-->
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="txt_departmentname">登录名</label>
+                    <label for="txt_departmentname">登录名<span style="color: red">*</span></label>
                     <input type="text" name="txt_departmentname" class="form-control" id="txt_departmentname" placeholder="请输入要注册的登录名" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="txt_parentdepartment">密码</label>
-                    <input type="text" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment" placeholder="请输入要注册的密码" autocomplete="off">
+                    <label for="txt_parentdepartment">密码<span style="color: red">*</span></label>
+                    <input type="password" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment" placeholder="请输入要注册的密码" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="txt_departmentlevel">所属单位</label>
+                    <label for="txt_checkpwd">确认密码<span style="color: red">*</span></label>
+                    <input type="password" name="txt_checkpwd" class="form-control" id="txt_checkpwd" placeholder="请输入注册码" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="txt_departmentlevel">所属单位<span style="color: red">*</span></label>
                     <input type="text" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel" placeholder="请输入要注册的所属单位" autocomplete="off" >
                 </div>
                 <div class="form-group">
-                    <label for="txt_statu">标记</label>
+                    <label for="txt_statu">标记<span style="color: red">*</span></label>
                     <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="请输入要注册的标记" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="txt_code">注册码</label>
+                    <label for="txt_code">注册码<span style="color: red">*</span></label>
                     <input type="text" name="txt_code" class="form-control" id="txt_code" placeholder="请输入注册码" autocomplete="off">
                 </div>
                 <div class="form-group" id="showhidden">
-                    <label>选择日期</label>
+                    <label>选择日期<span style="color: red">*</span></label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='datetimepicker1'>
                         <input type='text' class="form-control"  placeholder="请输入用户的使用截至时间"/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -154,42 +159,58 @@
         const mark = $("#txt_statu").val();
         const endTime = $("#datetimepicker1 input").val();
         const activeCode = $("#txt_code").val();
-        if (activeCode == "") {
-            return layer.msg("注册码必填项，请填写");
+        const checkpwd = $("#txt_checkpwd").val();
+        if (username == "") {
+            return layer.msg("登录名必填,请填写登录名.",{icon: 2});
+        }else if (password == "") {
+            return layer.msg("密码必填,请填写密码.",{icon: 2});
+        }else if (group == "") {
+            return layer.msg("所属单位必填,请填写所属单位.",{icon: 2});
+        }else if (mark == "") {
+            return layer.msg("标记必填,请填写标记.",{icon: 2});
+        }else if (activeCode == "") {
+            return layer.msg("注册码必填,请填写注册码.",{icon: 2});
+        }
+        if (password == checkpwd) {
+            /*if (activeCode == "") {
+                return layer.msg("注册码必填项，请填写");
+            } else {*/
+                api.checkUsername(username).then((response) => {
+                    if (response.length > 0) {
+                        return layer.msg("该用户名已经被注册");
+                    } else {
+                        api.checkCode(activeCode).then((res) => {
+                            if (res.length > 0) {
+                                api.regist(username, pwde, group, mark, endTime, activeCode).then((data) => {
+                                    if (data.success) {
+                                        layer.msg(data.content, {
+                                            time: 0 //不自动关闭
+                                            , btn: ['确定']
+                                            , yes: function (index) {
+                                                let par = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                                parent.layer.close(par);  // 关闭layer
+                                                window.parent.location.reload(); //刷新父页面
+                                            }
+                                        });
+                                    } else {
+                                        layer.alert(data.content, {icon: 2})
+                                    }
+                                }).catch((err) => {
+                                    layer.alert(err, {icon: 2})
+                                });
+                            } else {
+                                layer.msg("无效注册码");
+                            }
+                        }).catch(err => {
+                            layer.alert(err, {icon: 2});
+                        });
+                    }
+                }).catch((err) => {
+                    layer.alert(err, {icon: 2});
+                });
+            // }
         }else {
-            api.checkUsername(username).then((response) => {
-                if (response.length > 0) {
-                    return layer.msg("该用户名已经被注册");
-                } else {
-                    api.checkCode(activeCode).then((res) => {
-                        if (res.length > 0) {
-                            api.regist(username, pwde, group, mark, endTime, activeCode).then((data) => {
-                                if (data.success) {
-                                    layer.msg(data.content, {
-                                        time: 0 //不自动关闭
-                                        , btn: ['确定']
-                                        , yes: function (index) {
-                                            let par = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                                            parent.layer.close(par);  // 关闭layer
-                                            window.parent.location.reload(); //刷新父页面
-                                        }
-                                    });
-                                } else {
-                                    layer.alert(data.content, {icon: 2})
-                                }
-                            }).catch((err) => {
-                                layer.alert(err, {icon: 2})
-                            });
-                        } else {
-                            layer.msg("无效注册码");
-                        }
-                    }).catch(err => {
-                        layer.alert(err, {icon: 2});
-                    });
-                }
-            }).catch((err) => {
-                layer.alert(err, {icon: 2});
-            });
+            layer.msg("两次输入的密码不一致，请输入正确的密码",{icon: 2});
         }
     });
 </script>

@@ -23,15 +23,15 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="txt_departmentname">原密码</label>
+                    <label for="txt_departmentname">原密码<span style="color: red">*</span></label>
                     <input type="password" name="txt_departmentname" class="form-control" id="txt_departmentname" placeholder="请输入原密码" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="txt_parentdepartment">新密码</label>
+                    <label for="txt_parentdepartment">新密码<span style="color: red">*</span></label>
                     <input type="password" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment" placeholder="请输入新密码" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="txt_departmentlevel">确认密码</label>
+                    <label for="txt_departmentlevel">确认密码<span style="color: red">*</span></label>
                     <input type="password" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel" placeholder="请确认新密码" autocomplete="off" >
                 </div>
             </div>
@@ -112,16 +112,24 @@
     $("#btn_submit").click(() => {
         const oldPwd = $("#txt_departmentname").val();
         const newPwd = $("#txt_parentdepartment").val();
+        const checkpwd = $("#txt_departmentlevel").val();
         const oldPassword = $.md5(oldPwd);
         const newPassword = $.md5(newPwd);
+        if (oldPwd == "") {
+            return layer.msg("原密码必填,请填写.",{icon: 2});
+        }else if (newPwd == "") {
+            return layer.msg("新密码必填,请填写.",{icon: 2});
+        }else if (checkpwd == "") {
+            return layer.msg("确认密码必填,请填写.",{icon: 2});
+        }else if (newPwd != checkpwd) {
+            return layer.msg("确认密码跟新密码不相同，请确认",{icon: 2});
+        }
         api.checkIsPwd(username, oldPassword).then((list) => {
             if (list.length < 1) {
                 layer.alert('登陆密码录入错误',{icon: 2});
             }else {
                 if (oldPwd === newPwd) {
-                    layer.msg("新旧密码不能相同，请修改",{
-                        time: 1000
-                    });
+                    layer.msg("新旧密码不能相同，请修改",{icon: 2});
                 } else {
                     api.updatePassword(list[0].id, newPassword).then((data) => {
                         if (data.success) {
